@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #b8860b;
+  --color-primary-dark: #8b6914;
+  --color-primary-light: #d4af37;
+  --color-secondary: #1e5631;
+  --color-secondary-light: #2e7d32;
+  --color-accent: #f9b234;
+  --color-text: #333333;
+  --color-text-light: #666666;
+  --color-background: #ffffff;
+  --color-background-alt: #f5f5f5;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply font-body text-gray-800 bg-white;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-bold;
+  }
+  
+  h1 {
+    @apply text-4xl md:text-5xl mb-6;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl mb-5;
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl mb-4;
+  }
+  
+  h4 {
+    @apply text-xl md:text-2xl mb-3;
+  }
+  
+  p {
+    @apply mb-4 leading-relaxed;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-block px-6 py-3 rounded-md font-medium transition-all duration-300 text-center;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary-dark;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-white hover:bg-secondary-dark;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-primary text-primary hover:bg-primary hover:text-white;
+  }
+  
+  .section {
+    @apply py-16 md:py-24;
+  }
+  
+  .container {
+    @apply px-4 mx-auto max-w-7xl;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg;
+  }
+  
+  .input {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+  }
+  
+  .badge {
+    @apply inline-block px-3 py-1 text-xs font-medium rounded-full;
+  }
+  
+  .price {
+    @apply text-xl font-bold text-primary;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.hero-gradient {
+  background: linear-gradient(to right, rgba(30, 86, 49, 0.85), rgba(30, 86, 49, 0.6)), url('/assets/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.arabic-accent {
+  font-family: 'Amiri', serif;
+}
