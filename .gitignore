@@ -26,3 +26,7 @@ dist-ssr
 # Tempo files
 **/tempobook/dynamic/
 **/tempobook/storyboards/
+
+# Large files
+public/videos/*.mp4
+project.zip
