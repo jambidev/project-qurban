@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, ShoppingCart } from 'lucide-react';
-import 'animate.css';
-import { useCart } from '../../context/CartContext';
+import React, { useState, useEffect, useCallback } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X, Phone, ShoppingCart } from "lucide-react";
+import "animate.css";
+import { useCart } from "../../context/CartContext";
 
 const isMobile = () => {
-  if (typeof navigator === 'undefined') return false;
+  if (typeof navigator === "undefined") return false;
   return /android|iphone|ipad|ipod/i.test(navigator.userAgent);
 };
 
@@ -28,9 +28,9 @@ const Header: React.FC = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -39,10 +39,19 @@ const Header: React.FC = () => {
   }, [location]);
 
   const navLinks = [
-    { name: 'Beranda', path: '/' },
-    { name: 'Produk', path: '/products' },
-    { name: 'Tentang Kami', path: '/about' },
-    { name: 'Kontak', path: '/contact' },
+    { name: "Beranda", path: "/" },
+    { name: "Produk", path: "/products" },
+    {
+      name: "Foto Ternak",
+      path: "#",
+      submenu: [
+        { name: "Sapi", path: "/gallery/sapi" },
+        { name: "Kambing", path: "/gallery/kambing" },
+      ],
+    },
+    { name: "Cara Pembelian", path: "/order-guide" },
+    { name: "Tentang Kami", path: "/about" },
+    { name: "Kontak", path: "/contact" },
   ];
 
   const isActive = (path: string) => {
@@ -61,30 +70,68 @@ const Header: React.FC = () => {
   }, []);
 
   return (
-    <header 
+    <header
       className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-5'
+        isScrolled ? "bg-white shadow-md py-3" : "bg-transparent py-5"
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <Link to="/" className="z-10 text-2xl font-bold text-primary animate__animated animate__fadeIn">
+        <Link
+          to="/"
+          className="z-10 text-2xl font-bold text-yellow-500 animate__animated animate__fadeIn"
+        >
           Surya Ternak
         </Link>
 
         <nav className="hidden md:flex items-center space-x-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`font-medium transition-colors duration-300 animate__animated animate__fadeIn ${
-                isActive(link.path)
-                  ? 'text-primary font-semibold'
-                  : 'text-gray-700 hover:text-primary'
-              }`}
-            >
-              {link.name}
-            </Link>
-          ))}
+          {navLinks.map((link) =>
+            link.submenu ? (
+              <div key={link.path} className="relative group">
+                <button
+                  className={`font-medium transition-colors duration-300 animate__animated animate__fadeIn flex items-center text-gray-700 hover:text-primary`}
+                >
+                  {link.name}
+                  <svg
+                    className="ml-1 w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </button>
+                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                  {link.submenu.map((sublink) => (
+                    <Link
+                      key={sublink.path}
+                      to={sublink.path}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary"
+                    >
+                      {sublink.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`font-medium transition-colors duration-300 animate__animated animate__fadeIn ${
+                  isActive(link.path)
+                    ? "text-primary font-semibold"
+                    : "text-gray-700 hover:text-primary"
+                }`}
+              >
+                {link.name}
+              </Link>
+            ),
+          )}
         </nav>
 
         <div className="hidden md:flex items-center space-x-6">
@@ -104,6 +151,12 @@ const Header: React.FC = () => {
               {getTotalItems()}
             </span>
           </Link>
+          <Link
+            to="/login"
+            className="flex items-center px-4 py-2 rounded-full bg-secondary text-white hover:bg-secondary-dark transition-colors duration-300 animate__animated animate__fadeIn"
+          >
+            <span className="font-medium">Login</span>
+          </Link>
         </div>
 
         <div className="flex items-center md:hidden z-10">
@@ -113,9 +166,18 @@ const Header: React.FC = () => {
               aria-label="Fullscreen"
               onClick={handleFullscreen}
               className="mr-2 p-2 bg-black/40 hover:bg-black/70 rounded-full"
-              style={{ border: 'none' }}
+              style={{ border: "none" }}
             >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M8 3H5a2 2 0 0 0-2 2v3" />
                 <path d="M16 3h3a2 2 0 0 1 2 2v3" />
                 <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
@@ -126,35 +188,61 @@ const Header: React.FC = () => {
           <button
             className="focus:outline-none"
             onClick={toggleMenu}
-            aria-label={isMenuOpen ? 'Close Menu' : 'Open Menu'}
+            aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
           >
             {isMenuOpen ? (
               <X size={28} className="text-gray-800" />
             ) : (
-              <Menu size={28} className={`${isScrolled ? 'text-gray-800' : 'text-white'}`} />
+              <Menu
+                size={28}
+                className={`${isScrolled ? "text-gray-800" : "text-white"}`}
+              />
             )}
           </button>
         </div>
 
         <div
           className={`fixed inset-0 bg-white z-[5] transition-transform duration-300 ease-in-out transform ${
-            isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            isMenuOpen ? "translate-x-0" : "translate-x-full"
           } md:hidden`}
         >
           <div className="flex flex-col items-center justify-center h-full space-y-8 p-5">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`text-xl font-medium animate__animated animate__fadeInRight ${
-                  isActive(link.path)
-                    ? 'text-primary font-semibold'
-                    : 'text-gray-800 hover:text-primary'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
+            {navLinks.map((link) =>
+              link.submenu ? (
+                <div key={link.path} className="flex flex-col items-center">
+                  <span className="text-xl font-medium text-gray-800 mb-2">
+                    {link.name}
+                  </span>
+                  <div className="flex flex-col items-center space-y-3 mb-3">
+                    {link.submenu.map((sublink) => (
+                      <Link
+                        key={sublink.path}
+                        to={sublink.path}
+                        className={`text-lg font-medium animate__animated animate__fadeInRight ${
+                          isActive(sublink.path)
+                            ? "text-primary font-semibold"
+                            : "text-gray-600 hover:text-primary"
+                        }`}
+                      >
+                        {sublink.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`text-xl font-medium animate__animated animate__fadeInRight ${
+                    isActive(link.path)
+                      ? "text-primary font-semibold"
+                      : "text-gray-800 hover:text-primary"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ),
+            )}
             <div className="pt-6 flex flex-col items-center space-y-4">
               <a
                 href="tel:08127821339"
@@ -169,6 +257,12 @@ const Header: React.FC = () => {
               >
                 <ShoppingCart size={20} />
                 <span>Keranjang ({getTotalItems()})</span>
+              </Link>
+              <Link
+                to="/login"
+                className="flex items-center space-x-2 px-5 py-2 mt-3 rounded-full bg-secondary text-white hover:bg-secondary-dark transition-colors duration-300"
+              >
+                <span>Login</span>
               </Link>
             </div>
           </div>
